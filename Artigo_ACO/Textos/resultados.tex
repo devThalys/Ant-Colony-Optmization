@@ -1,0 +1,68 @@
+\section{Resultados}
+O algoritmo implementa um menu de opções, onde é possível escolher entre o número máximo de utilizações do mesmo macho para proliferação, podendo ser definido entre 12 à 20 usos máximos. Ao executar o algoritmo, as saídas apresentam o número de formigas, número de iterações, a taxa de evaporação, o tempo de execução do algoritmo e a importância do feromônio e da heurística. Também são apresentados alguns elementos sobre a base de dados utilizadas como o número total de fêmeas, número total de machos, o valor médio e máximo do índice de seleção da prole e o valor máximo de coancestralidade para um determinado conjunto de parâmetros de entradas.
+Para fins de análise, levando em consideração que uma metaheurística é um processo probabilístico, ou seja, apenas uma execução não é capaz de verificar a capacidade técnica da solução, foram realizados 30 testes diferentes em cada um dos cenários, onde foram fixados os seguintes parâmetros:
+\begin{itemize}
+    \item Número de formigas artificiais: 20
+    \item Número de iterações: 50
+    \item Importância do feromônio \(\alpha\): 1
+    \item Importância da heurística \(\beta\): 3
+    \item Taxa de evaporação: 0,5
+\end{itemize}
+Levou-se em consideração que parâmetros mais baixos fazem a colônia nunca aprender padrões à tempo, enquanto números mais elevados aos informados produzem um custo computacional extra no tempo de execução sem ganho significativo dado às soluções, assim, os dados da tabela \ref{resultados_comparativos} apresentam a média dos resultados obtidos após 30 execuções do algoritmo para a entrada de 60 fêmeas e 5 machos.
+\begin{center}
+\begin{longtable}{|c|c|c|}
+\caption{Média dos resultados obtidos após 30 execuções do algoritmo} \label{resultados_comparativos} \\ \hline
+\textbf{Limite de uso dos machos} & \textbf{Coancestralidade} & \textbf{Soma dos índices genéticos}\\ \hline
+\texttt{12} & 83,32 & 77,50 \\ \hline
+\texttt{13} & 83,85 & 82,50  \\ \hline
+\texttt{14} & 84,93& 87,50 \\ \hline
+\texttt{15} & 85,09 & 92,50 \\ \hline
+\texttt{16} & 86,74 & 97,50 \\ \hline
+\texttt{17} & 88,44 & 102,50 \\ \hline
+\texttt{18} & 91,43 & 107,50 \\ \hline
+\texttt{19} & 93,89 & 112,50\\ \hline 
+\texttt{20} & 96,21 & 117,50 \\ \hline
+\end{longtable}
+\end{center}
+Os valores da Tabela \ref{resultados_comparativos} mostram que, ao aumentar o limite de uso dos machos, ocorre simultaneamente um agravamento da coancestralidade piorando a qualidade nesse critério já que os machos com maiores índices genéticos individuais poderão reproduzir mais, gerando uma consanguinidade elevada, por outro lado, o aumento do limite de uso também aumenta proporcionalmente a soma dos índices genéticos, melhorando o desempenho produtivo na próxima solução, ao custo de causar possíveis doenças ou fragilidades às gerações futuras. Esse comportamento evidencia uma troca proporcional do problema onde liberar mais acasalamentos por macho favorece soluções geneticamente superiores em termos de mérito, porém às custas de maior concentração genética e, portanto, menor diversidade. Assim, a escolha do limite ideal depende do balanço desejado entre conservação e ganho genético dentro do sistema de seleção. 
+Para permitir a comparação equilibrada entre os dois parâmetros avaliados em cada limite $L$, a coancestralidade $C_L$ e a soma dos índices genéticos $S_L$, ambos os valores foram normalizados para o intervalo $[0,\,1]$. A normalização foi realizada segundo
+\[
+\tilde{x}_L = \frac{x_L - \min(x)}{\max(x) - \min(x)}.
+\]
+
+Assim, para a coancestralidade, obtém-se
+\[
+\tilde{C}_L = \frac{C_L - \min(C)}{\max(C) - \min(C)},
+\]
+onde $\tilde{C}_L$ representa o custo relativo de cada limite. Como valores maiores de $C_L$ são indesejáveis, quanto mais próximo de $0$ estiver $\tilde{C}_L$, melhor é o desempenho do limite em termos de controle da coancestralidade; inversamente, valores próximos de $1$ indicam pior desempenho.
+
+De forma análoga, para o índice genético, cuja natureza é de maximização, calcula-se
+\[
+\tilde{S}_L = \frac{S_L - \min(S)}{\max(S) - \min(S)},
+\]
+onde $\tilde{S}_L$ reflete o ganho genético relativo, com $0$ indicando o pior valor observado e $1$ o melhor entre os limites avaliados.
+
+Após a normalização, a decisão final sobre qual limite é mais vantajoso é realizada por meio da função de utilidade
+\[
+U(L) = w_S \cdot \tilde{S}_L \;-\; w_C \cdot \tilde{C}_L,
+\]
+em que $w_S$ e $w_C$ representam os pesos atribuídos ao ganho genético e ao controle da coancestralidade, respectivamente. Quanto maior o valor de $U(L)$, mais vantajoso é o limite $L$, pois isso indica simultaneamente maior ganho genético normalizado e menor custo de coancestralidade normalizada.
+
+Dessa forma, todos os limites avaliados serão submetidos à função de utilidade $U(L)$, que pode ser visualizado na tabela \ref{resultados_normalizados}
+
+\begin{center}
+\begin{longtable}{|c|c|c|c|}
+\caption{Qualidade dos resultados normalizados para 60 fêmeas e 5 machos} \label{resultados_normalizados} \\ \hline
+\textbf{Limite de uso dos machos} & $C_L$ & $S_L$ & $U(L)$\\ \hline
+\texttt{12} & 0,000 & 0,000 & 0,000 \\ \hline
+\texttt{13} & 0,041 & 0,125 & 0,084\\ \hline
+\texttt{14} & 0,125 & 0,250 & 0,125\\ \hline
+\texttt{15} & 0,137 & 0,375 & 0,238 \\ \hline
+\texttt{16} & 0,266 & 0,500 & 0,234 \\ \hline
+\texttt{17} & 0,397 & 0,625 & 0,228 \\ \hline
+\texttt{18} & 0,631 & 0,750 & 0,119 \\ \hline
+\texttt{19} & 0,822 & 0,875 & 0,053 \\ \hline 
+\texttt{20} & 1,000 & 1,000 & 0,000 \\ \hline
+\end{longtable}
+\end{center}
+A análise conjunta da coancestralidade e do ganho genético normalizados evidencia que nenhum limite de uso dos machos é simultaneamente ótimo para ambos os critérios, reforçando a necessidade de uma métrica que avalie o equilíbrio entre custo e benefício. Pela função de utilidade adotada, que privilegia maiores índices genéticos e penaliza incrementos de parentesco, observa-se que o limite \(L = 15\) apresenta o melhor comprometimento entre esses fatores, atingindo o maior valor de \(U(L)\). Para valores abaixo desse limite, o ganho genético cresce lentamente e não compensa a ligeira redução na coancestralidade; para valores acima, embora o índice genético continue aumentando, o crescimento acelerado da coancestralidade gera um impacto negativo proporcionalmente maior. Assim, o limite de \(15\) usos configura-se como mais vantajoso entre os cenários avaliados, oferecendo o equilíbrio mais eficiente entre a preservação da diversidade genética e o progresso genético obtido.

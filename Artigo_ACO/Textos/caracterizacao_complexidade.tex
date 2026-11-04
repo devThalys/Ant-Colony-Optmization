@@ -1,0 +1,26 @@
+\section{Caracterização e complexidade do problema}
+\label{sec-complexidade-problema}
+Sejam \(M\) o conjunto de machos (touros) e \(F\) o conjunto de fêmeas (vacas). Para cada par \((i,j)\), com \(i\in M\) e \(j\in F\), definimos a variável de decisão binária 
+\[ x_{i,j} = \begin{cases} 1, & \text{se a fêmea } j \text{ for cruzada com o macho } i,\\[4pt] 0, & \text{caso contrário.} \end{cases} \]
+A função objetivo consiste em minimizar a coancestralidade total entre os descendentes gerados:
+\[ \min\; P(x) = \sum_{(x,y)}\sum_{(w,v)} c_{(x,y)(w,v)} \; x_{x,y}\, x_{w,v}, \] 
+onde \(c_{(x,y)(w,v)}\in[0,1]\) representa o coeficiente de coancestralidade entre os descendentes dos casais \((x,y)\) e \((w,v)\). As restrições do modelo são:
+\begin{enumerate} 
+    \item \textbf{Cada fêmea cruza exatamente uma vez:} \[ \forall j\in F:\quad \sum_{i\in M_j} x_{i,j} = 1, \] onde \(M_j\subseteq M\) denota o subconjunto de machos compatíveis com a fêmea \(j\). 
+    \item \textbf{Limite de usos por macho:} \[ \forall i\in M:\quad \sum_{j\in F} x_{i,j} \le U_i, \] com \(U_i\) definindo o número máximo de cruzamentos permitidos para o macho \(i\) (por exemplo, \(U_i\in\{12,18,20\}\) nos cenários testados). 
+    \item \(\,x_{i,j}\in\{0,1\}\) para todo \(i\in M, j\in F\). 
+\end{enumerate} 
+Em resumo, o problema pode ser formulado como um problema de otimização combinatória binária: 
+\[ \begin{aligned} 
+\min\quad & P(x) = \sum_{(x,y)}\sum_{(w,v)} c_{(x,y)(w,v)} \, x_{x,y}\, x_{w,v}\\ 
+\text{sujeito a:}\quad & \sum_{i\in M_j} x_{i,j} = 1\quad \forall j\in F,\\
+&\sum_{j\in F} x_{i,j} \le U_i\quad \forall i\in M,\\
+& x_{i,j}\in\{0,1\}. 
+\end{aligned} \]
+
+No contexto da ACS, o problema de acasalamento é reinterpretado como um grafo bipartido que conecta o conjunto de fêmeas \(F\) ao conjunto de machos \(M\), onde cada aresta \((i,j)\) do grafo representa uma decisão possível de acasalamento entre o macho \(i\) e a fêmea \(j\), associada a um nível de feromônio \(\tau_{i,j}\) que indica a atratividade acumulada daquela combinação com base em iterações anteriores. 
+
+Além do feromônio, define-se uma heurística de visibilidade \(\eta_{i,j}\) construída a partir dos índices genéticos dos animais, permitindo favorecer combinações com maior potencial genético. 
+Cada formiga percorre o grafo selecionando, para cada fêmea, um macho válido por meio de uma regra probabilística que combina o feromônio acumulado e a heurística genética. A probabilidade de escolha é proporcional a \(\tau_{i,j}^{\alpha}\eta_{i,j}^{\beta}\), de modo que tanto a experiência da colônia quanto a qualidade local da decisão influenciam o processo, sempre em conformidade com as restrições do problema.
+Após a construção de cada solução, o ACS realiza tanto atualizações locais quanto globais do feromônio, permitindo equilibrar exploração e intensificação e conduzindo a busca a soluções de menor parentesco.
+
