@@ -8,8 +8,6 @@ O objetivo é equilibrar dois critérios conflitantes:
 
 Trabalho desenvolvido na disciplina de **Problemas e Algoritmos** (2º semestre de 2025) do curso de Engenharia de Computação da **Universidade Federal do Pampa (UNIPAMPA)**, Campus Bagé.
 
----
-
 ## ⚙️ O Problema e a Modelagem
 
 O problema consiste em definir quais touros cruzar com quais vacas respeitando restrições de uso máximo por macho e evitando endogamia excessiva. 
@@ -17,8 +15,6 @@ O problema consiste em definir quais touros cruzar com quais vacas respeitando r
 - **Representação:** Modelado como um grafo bipartido onde formigas artificiais constroem soluções probabilísticas baseadas em **feromônio** (experiência acumulada da colônia) e **heurística** (índices genéticos dos animais).
 - **Função de Custo:** Soma das coancestralidades dos casais formados, com critério de desempate baseado na soma dos índices genéticos.
 - **Análise de Limites:** O estudo avaliou diferentes limites de acasalamentos por macho (de 12 a 20), identificando por meio de uma função de utilidade que o limite de **15 usos** oferece o melhor equilíbrio entre diversidade e ganho genético.
-
----
 
 ## 📂 Estrutura do Repositório
 
